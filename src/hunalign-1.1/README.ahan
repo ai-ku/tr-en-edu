@@ -1,0 +1,5 @@
+You can run Hunalign with En-Tr dictionary and preferred settings by executing run.sh:
+
+./run.sh turkish_text english_text
+
+It will create two aligned versions of the text files: turkish_text.aln, turkish_text.aln 
