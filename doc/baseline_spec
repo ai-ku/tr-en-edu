@@ -1,0 +1,6 @@
+Finally we decided that we every language pair will  need at least two baseline model:   
+- both will have 2,5 -3,5 mln segment pairs of off-domain data 
+- both will be tuned and test on in-domain data (1000 sentence pairs in dev, and 2000 in test) 
+- the first baseline model will use LM built on target part of train data 
+- the second baseline model will use 2 LMs: one LM built on target part of train data, and the other LM built on in-domain data (the latter was prepared by ALS and uploaded by Sergio) 
+- dev and tst corpora will have to be representative to the average in-domain data crawled. It concerns basically average sentence length (~ 8-9 word per sentence) 

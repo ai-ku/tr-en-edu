@@ -1,0 +1,45 @@
+From: Joeri Van de Walle <joeri.vandewalle@crosslang.com>
+Date: Wed, Dec 21, 2011 at 9:58 PM
+Subject: Re: [Bologna] D4.5 Deliverable: Advanced MT systems, common specifications?
+To: Justyna Pietrzak <justyna@eleka.net>
+Cc: all@bologna-translation.eu
+
+
+Dear all,
+
+Please find below some more information on how to build the advanced systems for deliverables D4.5 (FR, ES, DE), D4.7 (PT, TR, FI), and D4.8 (NL, EN-ZH). Feel free to get back to me in case of questions or doubts.
+
+
+ADVANCED SMT SYSTEMS
+
+Advanced SMT systems will be created by building on the baseline systems.
+
+Additional resources to be built by the partners and to be used in the experiments listed below are:
+In-domain phrase table (I-D PT): Each partner will build an I-D PT using all in-domain data they collected. There is no limitation on the size of the training data this time. It is very important, though, that the test set and dev set data used for building the baseline systems be excluded from the training data. For language pairs for which system combination will be performed (ES, PT, TR, and FI), an additional 'system combination dev set' of 1000 segments will need to be extracted from the collected data and will need to be held out of the training data. See SYSTEM COMBINATION below for more details.
+Large in-domain language model (large I-D LM): ALS will build the large I-D LM by combining the small I-D LM built for the baseline system experiments with all parallel data collected by the partners (the English side of that data, that is) into one single large I-D LM. As requested in a previous e-mail, partners are requested to upload their parallel data to our FTP server to the appropriate deliverable folders.
+With those resources, each partner is expected to at least perform the following experiments:
+Create a new system by tuning with the I-D PT and the large I-D LM
+Build a new, combined phrase table (CPT) by training with the in-domain data and the out-of-domain data used for building the baseline system. Create a new system by tuning with the CPT and the large I-D LM.
+In addition to these two experiments, partners are free to try out additional things. For example:
+In addition to building a new CPT by retraining, one might try to combine the existing out-of-domain phrase table with the newly built I-D PT during tuning. ALS will perform this experiment for French—English.
+Each language pair may benefit from different language-specific experiments, such as using a compound splitter, a morphological segmenter, etc.
+Each partner is free to perform whatever additional experiment they think may improve the quality of the output.
+
+For each experiment the partners conduct, the same information as before should be provided in the report: same MT-Eval metrics, same MERT lambda weights, some example translations. Refer to D4.1 as a template.
+
+
+SYSTEM COMBINATION
+
+For FR-EN, DE-EN, NL-EN, and EN-ZH, the advanced system will be the system that comes out best of the experiments described above.
+
+For the other four language pairs (ES-EN, TR-EN, PT-EN, and FI-EN), the advanced system will be a system that combines the output of the RBMT systems built for these language pairs with that of the various SMT systems created performing the experiments described above in the ADVANCED SMT SYSTEMS section.
+
+System combination will be performed by ALS for all four language pairs. In order for ALS to be able to perform these system combination experiments, they would need to receive the following from the partners involved:
+A separate system combination development set (1K sentence pairs). This new dev set should not overlap with the translation model/LM training set, with the previous development set used for building the baseline systems, or with the test set. This new dev set needs to be held out prior to training the in-domain SMT system. I will create a folder "dev_sc" under the deliverable folders on the FTP server for the language pairs that require it. Please upload the new dev set to that folder (and make sure it is excluded from the data you upload to the "training" folder).
+The target language model. ALS will have this already, since they will be building it.
+The translation of the system combination development set for each of the systems that will be used in the system combination experiments (i.e. the translation output of the RBMT system, that of the Advanced system resulting from experiment 1, that of the Advanced system resulting from experiment 2, and that of any other Advanced systems created additionally). If there are n-best lists available (top 200 translation outputs in the n-best list), it would be great if those can be provided as well.
+
+That's it. I hope all is clear. If not, let me know.
+
+Regards,
+Joeri
