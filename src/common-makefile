@@ -1,0 +1,72 @@
+TOK = $(shell find txt -type f | perl -pe 's/txt/tok/g')
+ALN = $(shell find tok -type f)
+
+# English-Tools
+TOKENIZER_EN=../../src/moses-scripts/tokenizer.perl -l en
+SENTENCESP_EN=../../src/moses-scripts/split-sentences.perl -l en
+ALIGN_EN=""
+# Turkish-Tools
+SENTENCESP_TR=../../src/moses-scripts/split-sentences.perl -l tr
+TOKENIZER_TR=../../src/moses-scripts/tokenizer.perl -l tr
+# Aligner
+ALIGN=../../src/hunalign-1.1/hunalign -text -bisent -realign -utf ../..//src/hunalign-1.1/data/en-tr.dic
+#all: ${TOK}
+#	echo ${TOK}
+
+tok: ${TOK}
+#	echo ${TOK}
+
+%.txt.tgz: %.html.tgz
+	tar xzf $<
+	cd $*/html;make 
+	tar czf $@ $*/html
+	rm -rf $*
+
+%.tok.tgz: %.txt.tgz
+	tar xzf $< 
+	cp Makefile $*
+	cd $*;make tok
+	tar czf $@ $*/tok
+	rm -rf $*
+
+tok/%.tok.en: txt/%.txt.en
+	mkdir -p tok
+	cat $< | ${TOKENIZER_EN} 2>$*.tok.en.err | ${SENTENCESP_EN} > $@ 2>$*.stc.en.err
+	-rm *.en.err
+
+tok/%.tok.tr: txt/%.txt.tr
+	mkdir -p tok
+	cat $< | ${TOKENIZER_TR} 2>$*.tok.en.err | ${SENTENCESP_TR} > $@ 2>$*.stc.tr.err
+	-rm *.tr.err
+
+%.aln.tgz: %.tok.tgz
+	tar xzf $<
+	cp Makefile $*
+	cd $*;make batch
+	tar czf $@ $*/aln
+	rm -rf $*
+
+batch:
+	mkdir -p aln	
+	ls tok | perl -lane 'my $$t = join("\n",@F);print "$$t";' > aln/batch.tmp
+	cat aln/batch.tmp | perl -lane 'if($$_ =~ /(.*?)\.tok.en$$/){ print "tok/$$1.tok.tr\ttok/$$1.tok.en\taln/$$1.aln";}' > aln/batch
+	rm aln/batch.tmp
+	-${ALIGN} -batch aln/batch >align.out 2>align.err
+	-rm aling.out align.err aln/batch
+
+# Print the concatenated alignment file for each language separately
+# Remove <P>
+%.aln: %.aln.tgz
+	tar xzf $<
+	cat $*/aln/*.aln |perl -lane 'print if $$_ !~ /<P>/' > $*.aln
+	rm -rf $*
+
+%.aln.tr: %.aln.tgz
+	tar xzf $<
+	cat $*/aln/*.aln |perl -lane 'print if $$_ !~ /<P>/'  | cut -f1 > $@
+	rm -rf $*
+
+%.aln.en: %.aln.tgz
+	tar xzf $<
+	cat $*/aln/*.aln |perl -lane 'print if $$_ !~ /<P>/'  | cut -f2> $@
+	rm -rf $*
