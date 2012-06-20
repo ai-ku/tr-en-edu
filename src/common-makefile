@@ -10,6 +10,7 @@ SENTENCESP_TR=../../src/moses-scripts/split-sentences.perl -l tr
 TOKENIZER_TR=../../src/moses-scripts/tokenizer.perl -l tr
 # Aligner
 ALIGN=../../src/hunalign-1.1/hunalign -text -bisent -realign -utf ../..//src/hunalign-1.1/data/en-tr.dic
+ALIGNTHR=0
 #all: ${TOK}
 #	echo ${TOK}
 
@@ -58,15 +59,15 @@ batch:
 # Remove <P>
 %.aln: %.aln.tgz
 	tar xzf $<
-	cat $*/aln/*.aln |perl -lane 'print if $$_ !~ /<P>/' > $*.aln
+	cat $*/aln/*.aln |perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > $ALIGNTHR)' > $*.aln
 	rm -rf $*
 
 %.aln.tr: %.aln.tgz
 	tar xzf $<
-	cat $*/aln/*.aln |perl -lane 'print if $$_ !~ /<P>/'  | cut -f1 > $@
+	cat $*/aln/*.aln |perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > $ALIGNTHR)'  | cut -f1 > $@
 	rm -rf $*
 
 %.aln.en: %.aln.tgz
 	tar xzf $<
-	cat $*/aln/*.aln |perl -lane 'print if $$_ !~ /<P>/'  | cut -f2> $@
+	cat $*/aln/*.aln |perl -lane 'print ($$_ !~ /<P>/ && $$F[-1] > $ALIGNTHR)'  | cut -f2> $@
 	rm -rf $*
