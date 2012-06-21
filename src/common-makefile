@@ -69,5 +69,7 @@ batch:
 
 %.aln.en: %.aln.tgz
 	tar xzf $<
-	cat $*/aln/*.aln |perl -lane 'print ($$_ !~ /<P>/ && $$F[-1] > $ALIGNTHR)'  | cut -f2> $@
+	cat $*/aln/*.aln |perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > $ALIGNTHR)' | cut -f2 >$@
 	rm -rf $*
+
+.PRECIOUS: *.tgz
