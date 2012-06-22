@@ -20,7 +20,7 @@ tok: ${TOK}
 %.txt.tgz: %.html.tgz
 	tar xzf $<
 	cd $*/html;make 
-	tar czf $@ $*/html
+	tar czf $@ $*/txt
 	rm -rf $*
 
 %.tok.tgz: %.txt.tgz
