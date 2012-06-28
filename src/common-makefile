@@ -11,6 +11,12 @@ TOKENIZER_TR=../../src/moses-scripts/tokenizer.perl -l tr
 # Aligner
 ALIGN=../../src/hunalign-1.1/hunalign -text -bisent -realign -utf ../..//src/hunalign-1.1/data/en-tr.dic
 ALIGNTHR=0
+
+#Remove all repetition
+RCOUNT=../src/rcount
+THR=10
+REMMULT=../src/remmult.pl ${THR}
+
 #all: ${TOK}
 #	echo ${TOK}
 
@@ -56,20 +62,15 @@ batch:
 	-rm aling.out align.err aln/batch
 
 # Print the concatenated alignment file for each language separately
-# Remove <P>
+# Remove <P> and the alignmens with <ALIGNTHR scores.
+# Multiple lines seen more than THR are only printed THR times
 %.aln: %.aln.tgz
 	tar xzf $<
-	cat $*/aln/*.aln |perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > $ALIGNTHR)' > $*.aln
-	rm -rf $*
-
-%.aln.tr: %.aln.tgz
-	tar xzf $<
-	cat $*/aln/*.aln |perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > $ALIGNTHR)'  | cut -f1 > $@
-	rm -rf $*
-
-%.aln.en: %.aln.tgz
-	tar xzf $<
-	cat $*/aln/*.aln |perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > $ALIGNTHR)' | cut -f2 >$@
-	rm -rf $*
+	cat $*/aln/*.aln |perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > ${ALIGNTHR})' > $*.aln
+	cat $*.aln | cut -f1 >$*.tmp1
+	cat $*.aln | cut -f2 >$*.tmp2
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} |cut -f1 > $@.tr
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} |cut -f2 > $@.en
+	rm -rf $* $*.tmp1 $*.tmp2
 
 .PRECIOUS: *.tgz
