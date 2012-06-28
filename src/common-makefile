@@ -62,11 +62,11 @@ batch:
 	-rm aling.out align.err aln/batch
 
 # Print the concatenated alignment file for each language separately
-# Remove <P> and the alignmens with <ALIGNTHR scores.
+# Remove <P> and the alignmens with <ALIGNTHR scores and empty lines.
 # Multiple lines seen more than THR are only printed THR times
 %.aln: %.aln.tgz
 	tar xzf $<
-	cat $*/aln/*.aln |perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > ${ALIGNTHR})' > $*.aln
+	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > ${ALIGNTHR} && $$_ !~ /^\t\t\d+/)' > $*.aln
 	cat $*.aln | cut -f1 >$*.tmp1
 	cat $*.aln | cut -f2 >$*.tmp2
 	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} |cut -f1 > $@.tr
