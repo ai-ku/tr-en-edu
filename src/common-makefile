@@ -74,4 +74,5 @@ batch:
 	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} |cut -f2 > $@.en
 	rm -rf $* $*.tmp1 $*.tmp2
 
-.PRECIOUS: *.tgz
+### MAKEFILE MISC:
+.PRECIOUS: %.tok.tgz %.txt.tgz %.aln.tgz %.html.tgz

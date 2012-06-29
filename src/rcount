@@ -1,0 +1,20 @@
+#!/usr/bin/perl -w
+use strict;
+use Getopt::Std;
+my %c;
+my %opt;
+my $sum = 0;
+my $cum = 0;
+getopts('ld', \%opt);
+
+while(<>) { chop; $c{$_}++; print STDERR "." if $opt{d} and $.%100000==0; }
+$sum += $c{$_} for keys %c;
+for(sort {$c{$b}<=>$c{$a}} keys %c) {
+    my $pct = $c{$_}/$sum;
+    $cum += $pct;
+    if ($opt{l}) {
+	printf("%d\t%s\t%g%%\t%g%%\n", $c{$_}, $_, 100*$pct, 100*$cum);
+    } else {
+	print "$c{$_}\t$_\n";
+    }
+}
