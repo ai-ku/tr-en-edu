@@ -25,7 +25,8 @@ tok: ${TOK}
 
 %.txt.tgz: %.html.tgz
 	tar xzf $<
-	cd $*/html;make 
+	mkdir -p $*/txt 
+	cd $*/html;make
 	tar czf $@ $*/txt
 	rm -rf $*
 
