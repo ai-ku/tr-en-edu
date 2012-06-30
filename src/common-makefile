@@ -128,6 +128,15 @@ osmangazi.aln: osmangazi.aln.tgz
 	paste osmangazi.tmp1 osmangazi.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > osmangazi.en.gz
 	rm -rf osmangazi osmangazi.tmp1 osmangazi.tmp2 
 
+itu.aln: itu.aln.tgz
+	tar xzf $<
+	cat itu/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 1.1 && $$_ !~ /^\t\t\d+/)' > itu.aln
+	cat itu.aln | cut -f1 > itu.tmp1
+	cat itu.aln | cut -f2 > itu.tmp2
+	paste itu.tmp1 itu.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > itu.tr.gz
+	paste itu.tmp1 itu.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > itu.en.gz
+	rm -rf itu itu.tmp1 itu.tmp2 
+
 %.aln: %.aln.tgz
 	tar xzf $<
 	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > ${ALIGNTHR} && $$_ !~ /^\t\t\d+/)' > $*.aln
