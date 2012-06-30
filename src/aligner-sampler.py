@@ -91,6 +91,8 @@ for line in file_lines:
     en_p_tr = tr_id.sent_prob(line[1])
     en_p_en = en_id.sent_prob(line[1])
     if tr_p_tr < tr_p_en or en_p_en < en_p_tr:
+        print line[0]
+        print line[1]
         deleted += 1
         continue
     bin = "%.1f" % float(trun_re.sub("\\1", line[2]))
