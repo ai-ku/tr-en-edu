@@ -141,6 +141,14 @@ setimes.aln: setimes.aln.tgz
 	paste setimes.tr setimes.en | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > setimes.en.gz
 	rm -rf setimes setimes.tr setimes.en 
 
+yok-utm.aln: yok-utm.aln.tgz
+	tar xzf $<
+	cat yok-utm/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 0 && $$_ !~ /^\t\t\d+/)' > yok-utm.aln
+	${FILTER} yok-utm.aln 1 yok-utm
+	paste yok-utm.tr yok-utm.en | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > yok-utm.tr.gz
+	paste yok-utm.tr yok-utm.en | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > yok-utm.en.gz
+	rm -rf yok-utm yok-utm.tr yok-utm.en 
+
 %.aln: %.aln.tgz
 	tar xzf $<
 	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 0 && $$_ !~ /^\t\t\d+/)' > $*.aln
@@ -148,6 +156,14 @@ setimes.aln: setimes.aln.tgz
 	paste $*.tr $*.en | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > $*.tr.gz
 	paste $*.tr $*.en | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > $*.en.gz
 	rm -rf $* $*.tr $*.en 
+
+### Statistics
+%.stat: %.aln.tgz
+	tar xzf $<
+	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 0 && $$_ !~ /^\t\t\d+/)' > $@
+	cut -f1 $@ | wc
+	cut -f2 $@ | wc
+	-rm $@
 
 ### MAKEFILE MISC:
 .PRECIOUS: %.tok.tgz %.txt.tgz %.aln.tgz %.html.tgz
