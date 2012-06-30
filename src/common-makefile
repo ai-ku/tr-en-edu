@@ -14,8 +14,8 @@ ALIGNTHR=0
 
 #Remove all repetition
 RCOUNT=../src/rcount
-THR=10
-REMMULT=../src/remmult.pl ${THR}
+MULTTHR=10
+REMMULT=../src/remmult.pl
 
 #all: ${TOK}
 #	echo ${TOK}
@@ -65,13 +65,31 @@ batch:
 # Print the concatenated alignment file for each language separately
 # Remove <P> and the alignmens with <ALIGNTHR scores and empty lines.
 # Multiple lines seen more than THR are only printed THR times
+anadolu.aln: anadolu.aln.tgz
+	tar xzf $<
+	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 0.8 && $$_ !~ /^\t\t\d+/)' > $*.aln
+	cat $*.aln | cut -f1 >$*.tmp1
+	cat $*.aln | cut -f2 >$*.tmp2
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > $@.tr.tgz
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > $@.en.tgz
+	rm -rf $* $*.tmp1 $*.tmp2
+
+marmara.aln: marmara.aln.tgz
+	tar xzf $<
+	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 0.8 && $$_ !~ /^\t\t\d+/)' > $*.aln
+	cat $*.aln | cut -f1 >$*.tmp1
+	cat $*.aln | cut -f2 >$*.tmp2
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > $@.tr.tgz
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > $@.en.tgz
+	rm -rf $* $*.tmp1 $*.tmp2
+
 %.aln: %.aln.tgz
 	tar xzf $<
 	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > ${ALIGNTHR} && $$_ !~ /^\t\t\d+/)' > $*.aln
 	cat $*.aln | cut -f1 >$*.tmp1
 	cat $*.aln | cut -f2 >$*.tmp2
-	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} |cut -f1 > $@.tr
-	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} |cut -f2 > $@.en
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} ${MULTTHR} |cut -f1 | gzip > $@.tr.tgz
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} ${MULTTHR} |cut -f2 | gzip > $@.en.tgz
 	rm -rf $* $*.tmp1 $*.tmp2
 
 ### MAKEFILE MISC:
