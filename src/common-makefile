@@ -101,6 +101,33 @@ sabanci.aln: sabanci.aln.tgz
 	paste sabanci.tmp1 sabanci.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > sabanci.en.gz
 	rm -rf sabanci sabanci.tmp1 sabanci.tmp2 
 
+ieu.aln: ieu.aln.tgz
+	tar xzf $<
+	cat ieu/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 0.6 && $$_ !~ /^\t\t\d+/)' > ieu.aln
+	cat ieu.aln | cut -f1 > ieu.tmp1
+	cat ieu.aln | cut -f2 > ieu.tmp2
+	paste ieu.tmp1 ieu.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > ieu.tr.gz
+	paste ieu.tmp1 ieu.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > ieu.en.gz
+	rm -rf ieu ieu.tmp1 ieu.tmp2 
+
+koc.aln: koc.aln.tgz
+	tar xzf $<
+	cat koc/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 0.7 && $$_ !~ /^\t\t\d+/)' > koc.aln
+	cat koc.aln | cut -f1 > koc.tmp1
+	cat koc.aln | cut -f2 > koc.tmp2
+	paste koc.tmp1 koc.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > koc.tr.gz
+	paste koc.tmp1 koc.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > koc.en.gz
+	rm -rf koc koc.tmp1 koc.tmp2 
+
+osmangazi.aln: osmangazi.aln.tgz
+	tar xzf $<
+	cat osmangazi/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 1.7 && $$_ !~ /^\t\t\d+/)' > osmangazi.aln
+	cat osmangazi.aln | cut -f1 > osmangazi.tmp1
+	cat osmangazi.aln | cut -f2 > osmangazi.tmp2
+	paste osmangazi.tmp1 osmangazi.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > osmangazi.tr.gz
+	paste osmangazi.tmp1 osmangazi.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > osmangazi.en.gz
+	rm -rf osmangazi osmangazi.tmp1 osmangazi.tmp2 
+
 %.aln: %.aln.tgz
 	tar xzf $<
 	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > ${ALIGNTHR} && $$_ !~ /^\t\t\d+/)' > $*.aln
