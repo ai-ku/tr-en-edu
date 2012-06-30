@@ -102,7 +102,7 @@ outcomereg = re.compile(ur'^(LEARNING OUTCOMES OF|DERSİN ÖĞRENME ÇIKTILARI)'
 deliveryreg = re.compile(ur'^(MODE OF DELIVERY|DERSİN VERİLİŞ BİÇİMİ)')
 readingreg = re.compile(ur'^(RECOMMENDED OR REQUIRED READING|ZORUNLU YA DA)')
 planreg = re.compile(ur'^(PLANNED LEARNING ACTIVITIES|ÖĞRETİM YÖNTEM VE TEKNİKLERİ)')
-itemreg = re.compile(ur'([ \-\(][1-9][\.\-\)][0-9\.\-\)]{0,1}[0-9\.\-\)]{0,1}|[\( \n\t][a-z][\)])')
+itemreg = re.compile(ur'([ \-\(]*[1-9][\.\-\)][0-9\.\-\)]{0,1}[0-9\.\-\)]{0,1}|[\( \n\t][a-z][\)])')
 stritemreg = re.compile(ur'^[\-\(]*[1-9a-z][\.\-\)][0-9\.\-\)]*')
 for (i, filename) in enumerate(os.listdir(inputFolder),start=0):
     if not re.search(ur'html\.(tr|en)$',filename): 
@@ -162,7 +162,7 @@ for (i, filename) in enumerate(os.listdir(inputFolder),start=0):
             sp = fsp
             fsp = []
             for ss in sp:
-                ss = ss.strip("\s\r\n\t\- ")
+                ss = ss.strip(" \t\n\r\f\v\-")
                 ss = re.sub(numreg,'',ss)
                 if len(ss) == 0: continue
                 ss = mycapitalize(ss)
@@ -174,18 +174,18 @@ for (i, filename) in enumerate(os.listdir(inputFolder),start=0):
 #            for ss in fsp:
 #                fout.write(ss + "\n")
         else:
-#            fout.write("ELSE print\n")
+#            fout.write("ELSE print0["+s+"]\n")            
             if len(sp) == 0:
                 sp.append(s)            
             for ss in sp:
-                ss = ss.strip("\s\r\n\t\- ")
+                ss = ss.strip(" \t\n\r\f\v\-")
                 ss = re.sub(stritemreg,"",ss)
                 ss = re.sub(numreg,"",ss)
-                fsp += split_stars(ss)                    
+                fsp += split_stars(ss)
         for ss in fsp:
             if not re.search(ur'[\.!\?]$',ss):
                 ss = re.sub(ur'[,;:]$',"",ss)
                 ss = ss + " ."
-            if ss.strip(): fout.write(ss + "\n")
+            if ss.strip(): fout.write(ss.strip() + "\n")
     fout.close()
         

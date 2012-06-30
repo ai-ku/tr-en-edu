@@ -92,13 +92,22 @@ bilgi.aln: bilgi.aln.tgz
 	paste bilgi.tmp1 bilgi.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > bilgi.en.gz
 	rm -rf bilgi bilgi.tmp1 bilgi.tmp2 
 
+sabanci.aln: sabanci.aln.tgz
+	tar xzf $<
+	cat sabanci/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > 0.5 && $$_ !~ /^\t\t\d+/)' > sabanci.aln
+	cat sabanci.aln | cut -f1 > sabanci.tmp1
+	cat sabanci.aln | cut -f2 > sabanci.tmp2
+	paste sabanci.tmp1 sabanci.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f1 | gzip > sabanci.tr.gz
+	paste sabanci.tmp1 sabanci.tmp2 | ${RCOUNT} | ${REMMULT} 10 |cut -f2 | gzip > sabanci.en.gz
+	rm -rf sabanci sabanci.tmp1 sabanci.tmp2 
+
 %.aln: %.aln.tgz
 	tar xzf $<
 	cat $*/aln/*.aln | perl -lane 'print if ($$_ !~ /<P>/ && $$F[-1] > ${ALIGNTHR} && $$_ !~ /^\t\t\d+/)' > $*.aln
 	cat $*.aln | cut -f1 >$*.tmp1
 	cat $*.aln | cut -f2 >$*.tmp2
-	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} ${MULTTHR} |cut -f1 | gzip > $@.tr.gz
-	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} ${MULTTHR} |cut -f2 | gzip > $@.en.gz
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} ${MULTTHR} |cut -f1 | gzip > $*.tr.gz
+	paste $*.tmp1 $*.tmp2 | ${RCOUNT} | ${REMMULT} ${MULTTHR} |cut -f2 | gzip > $*.en.gz
 	rm -rf $* $*.tmp1 $*.tmp2 
 
 ### MAKEFILE MISC:
