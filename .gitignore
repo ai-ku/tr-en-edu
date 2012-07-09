@@ -1,2 +1,16 @@
 # compiled source
 *.o
+!TurkishMorphology.so
+*.class
+*~
+src/srilm/bin/
+src/srilm/include/
+src/srilm/lib/
+src/tree-tagger/bin/
+src/tree-tagger/cmd/
+src/tree-tagger/doc/
+src/tree-tagger/lib/
+src/giza-pp/
+src/mgizapp/
+src/moses/giza/
+run/preprocess/
