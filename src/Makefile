@@ -1,5 +1,9 @@
 CORES=8
 
+sources = $(wildcard *.java)
+classes = $(sources:.java=.class)
+
+
 all: libs scripts
 
 libs: 
@@ -14,7 +18,7 @@ libs:
 	cp mgizapp/bin/bin/mgiza mgizapp/bin/scripts/merge_alignment.py moses/giza
 	-cd moses; ./bjam -j${CORES} --with-giza=$(shell pwd)/moses/giza --with-srilm=$(shell pwd)/srilm
 
-scripts : $(*.java)
+scripts: $(classes)
 
 %.class: %.java
 	javac -cp . $<
