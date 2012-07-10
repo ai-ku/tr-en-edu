@@ -9,9 +9,12 @@ HASIM-MORPH = ${SRC}/hasim-morph.sh
 TREE-TAGGER = ${SRC}/tree-tagger.sh
 LOWERCASE = java -cp ${SRC} Lowercase
 
-UNIVS= koc.alcmc.tr koc.alcmc.en
+UNIVS= koc.alcmc.tr koc.alcmc.en sabanci.alcmc.tr sabanci.alcmc.en
 
 all : ${UNIVS}
+
+clean:
+	rm -rf *.a.* *.al.* *.alc.* *.alcm.*
 
 #make%:
 #	for f in koc; do make $$f$*; done
