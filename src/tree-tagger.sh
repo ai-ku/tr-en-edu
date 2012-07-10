@@ -1,9 +1,8 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
-cd $DIR
+cd $( dirname "$0" )
 
-TT="../lib/tree-tagger"
+TT="tree-tagger"
 
 sed 's#^#<S> #g;s#$# <\/S>#g;s# #\n#g' $1 > $1.tmp.1
 $TT/bin/tree-tagger -token -lemma -sgml -no-unknown $TT/lib/english.par $1.tmp.1 $1.tmp.2

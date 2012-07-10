@@ -1,10 +1,9 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
-cd $DIR
+cd $( dirname "$0" )
 
-PARSER="../lib/hasim-morph/MP-1.0-Linux64"
-DISAMB="../lib/hasim-morph/MD-2.0"
+PARSER="hasim-morph/MP-1.0-Linux64"
+DISAMB="hasim-morph/MD-2.0"
 
 $PARSER/parse_corpus.py $PARSER/turkish.fst $1 > $1.mor.amb
 $DISAMB/md.pl -disamb $DISAMB/model.txt $1.mor.amb $1.mor.disamb
