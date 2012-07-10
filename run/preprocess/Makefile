@@ -9,7 +9,7 @@ HASIM-MORPH = ${SRC}/hasim-morph.sh
 TREE-TAGGER = ${SRC}/tree-tagger.sh
 LOWERCASE = java -cp ${SRC} Lowercase
 
-UNIVS= $(shell for f in anadolu bilgi ieu itu koc marmara sabanci; do $$f.alcmc.tr $$f.alcmc.en; done)
+UNIVS= $(shell echo {anadolu,bilgi,ieu,itu,koc,marmara,sabanci}.alcmc.{tr,en} )
 
 all : ${UNIVS}
 
