@@ -1,7 +1,15 @@
-To install the libraries and preprocess data, just execute make with available cores:
-	make CORES=8
+* Installing libraries and preprocessing datasets:
+	1) make CORES={Available Cores}
+		
+		Example: make CORES=8
+		
+* Running an experiment:
+	1) Change the working-dir parameter in the beginning of the experiment 
+	   config file (e.g. exp.univ.hiero/config) with the absolute path of 
+	   the experiment directory.
+		
+		Example: working-dir = /scratch/1/ahan/test/tr-en-edu/run/exp.univ.hiero
 	
-You should create new directory for an experiment and prepare the config file. You should
-also set working-dir parameter of the config file with the absolute path of the experiment directory. 
-After that, you can start a experiment by executing run-experiment.sh with experiment directory:
-	./run-experiment.sh {experiment-directory}
+	2)./run-experiment.sh {experiment-directory}
+		
+		Example: ./run-experiment exp.univ.hiero
