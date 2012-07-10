@@ -12,4 +12,4 @@
 	
 	2)./run-experiment.sh {experiment-directory}
 		
-		Example: ./run-experiment exp.univ.hiero
+		Example: ./run-experiment.sh exp.univ.hiero
