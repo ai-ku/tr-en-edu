@@ -13,4 +13,5 @@ src/tree-tagger/lib/
 src/giza-pp/
 src/mgizapp/
 src/moses/giza/
-run/preprocess/
+run/preprocess/*
+!run/preprocess/Makefile
