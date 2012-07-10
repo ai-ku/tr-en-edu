@@ -8,7 +8,7 @@ N = 8
 
 ### directory in which experiment is run
 #
-working-dir = .
+working-dir = 
 
 # specification of the language pair
 input-extension = tr
@@ -17,7 +17,7 @@ output-extension = en
 ### directories that contain tools and data
 # 
 # moses
-moses-src-dir = ../../src/moses
+moses-src-dir = $working-dir/../../src/moses
 #
 # moses binaries
 moses-bin-dir = $moses-src-dir/bin
@@ -29,13 +29,13 @@ moses-script-dir = $moses-src-dir/scripts
 external-bin-dir = $moses-src-dir/giza
 #
 # srilm
-srilm-dir = ../../src/srilm/bin/i686-m64
+srilm-dir = $working-dir/../../src/srilm/bin/i686-m64
 #
 # irstlm
 #irstlm-dir = /projects/disk2/kunlp/home/ahan/opt/irstlm/bin
 #
 # data directory
-data-dir = ../preprocess
+data-dir = $working-dir/../preprocess
 
 ### basic tools
 #
