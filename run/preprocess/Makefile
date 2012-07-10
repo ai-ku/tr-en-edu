@@ -1,3 +1,5 @@
+SHELL=/bin/bash
+
 CORES = 40
 
 DATA = ../../data
@@ -9,15 +11,12 @@ HASIM-MORPH = ${SRC}/hasim-morph.sh
 TREE-TAGGER = ${SRC}/tree-tagger.sh
 LOWERCASE = java -cp ${SRC} Lowercase
 
-UNIVS= $(shell echo {anadolu,bilgi,ieu,itu,koc,marmara,sabanci}.alcmc.{tr,en} )
+UNIVS= $(shell echo {anadolu,bilgi,ieu,itu,koc,marmara,sabanci}.alcmc.{tr,en})
 
 all : ${UNIVS}
 
 clean:
 	rm -rf *.a.* *.al.* *.alc.* *.alcm.*
-
-#make%:
-#	for f in koc; do make $$f$*; done
 
 %.alcmc.tr %.alcmc.en: %.alcm.tr %.alcm.en
 	${CLEAN} $*.alcm tr en $*.alcmc 1 80
