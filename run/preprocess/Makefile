@@ -1,7 +1,5 @@
 SHELL=/bin/bash
 
-CORES = 40
-
 DATA = ../../data
 SRC = ../../src
 
@@ -10,13 +8,24 @@ SPLIT-FILE = ${SRC}/split-file.py
 HASIM-MORPH = ${SRC}/hasim-morph.sh
 TREE-TAGGER = ${SRC}/tree-tagger.sh
 LOWERCASE = java -cp ${SRC} Lowercase
+SPLIT = ${SRC}/split.pl
 
-UNIVS= $(shell echo {anadolu,bilgi,ieu,itu,koc,marmara,sabanci}.alcmc.{tr,en})
+UNIVS = $(shell echo {anadolu,bilgi,ieu,itu,koc,marmara,sabanci}.alcmc.{tr,en})
+OTHERS = $(shell echo {os11,setimes,yok-utm}.alcmc.{tr,en})
 
-all : ${UNIVS}
+all : ${UNIVS} ${OTHERS}
+	mv os11.alcmc.tr os11.tr
+	mv os11.alcmc.en os11.en
+	mv setimes.alcmc.tr setimes.tr
+	mv setimes.alcmc.en setimes.en
+	mv yok-utm.alcmc.tr yok-utm.tr
+	mv yok-utm.alcmc.en yok-utm.en
+	cp ${SPLIT} .; chmod +x split.pl; ./split.pl
+	mv trn.tr univ.tr
+	mv trn.en univ.en
 
 clean:
-	rm -rf *.a.* *.al.* *.alc.* *.alcm.*
+	rm -rf *.a.* *.al.* *.alc.* *.alcm.* split.pl
 
 %.alcmc.tr %.alcmc.en: %.alcm.tr %.alcm.en
 	${CLEAN} $*.alcm tr en $*.alcmc 1 80

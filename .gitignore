@@ -13,5 +13,9 @@ src/tree-tagger/lib/
 src/giza-pp/
 src/mgizapp/
 src/moses/giza/
-run/preprocess/*
+run/*
 !run/preprocess/Makefile
+!run/Makefile
+!run/run-experiment.sh
+!run/README
+!run/*/config

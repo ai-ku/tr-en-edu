@@ -1,4 +1,3 @@
-CORES=8
 
 sources = $(wildcard *.java)
 classes = $(sources:.java=.class)

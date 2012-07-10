@@ -1,0 +1,6 @@
+To install the libraries and preprocess data, just execute make with available cores:
+	make CORES=8
+	
+You should create new directory for an experiment and prepare the config file. After
+that, you can start a experiment by executing run-experiment.sh with experiment directory:
+	./run-experiment.sh {experiment-directory}
