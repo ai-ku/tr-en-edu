@@ -14,7 +14,5 @@ libs:
 	cp mgizapp/bin/bin/mgiza mgizapp/bin/scripts/merge_alignment.py moses/giza
 	-cd moses; ./bjam -j${CORES} --with-giza=$(shell pwd)/moses/giza --with-srilm=$(shell pwd)/srilm
 
-scripts:
-	javac -cp . Lowercase.java
-	javac -cp . ParseHasimOutput.java
-	javac -cp . ParseTreeTaggerOutput.java
+%.class: %.java
+	javac -cp . $<
